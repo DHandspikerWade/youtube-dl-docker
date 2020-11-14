@@ -4,15 +4,19 @@
 
 FROM alpine
 
-RUN \
-    apk add --no-cache \
+RUN apk add --no-cache \
         ca-certificates \
         ffmpeg \
         openssl \
         python3 \
         aria2 \
-        py3-pip \
-    && pip3 install youtube-dl \
+        py3-pip 
+
+ARG BUILD_DATE
+LABEL org.label-schema.build-date=$BUILD_DATE
+
+RUN \ 
+    pip3 install youtube-dl \
     && apk add --no-cache atomicparsley --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 # Try to run it so we know it works
