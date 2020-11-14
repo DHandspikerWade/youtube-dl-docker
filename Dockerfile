@@ -3,15 +3,17 @@
 #
 
 FROM alpine
-MAINTAINER kev <noreply@easypi.pro>
 
-RUN set -xe \
-    && apk add --no-cache ca-certificates \
-                          ffmpeg \
-                          openssl \
-                          python3 \
-                          aria2 \
-    && pip3 install youtube-dl
+RUN \
+    apk add --no-cache \
+        ca-certificates \
+        ffmpeg \
+        openssl \
+        python3 \
+        aria2 \
+        py3-pip \
+    && pip3 install youtube-dl \
+    && apk add --no-cache atomicparsley --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 # Try to run it so we know it works
 RUN youtube-dl --version
