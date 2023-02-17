@@ -1,0 +1,19 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: Build & publish  
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: false
+  when:
+    branch:
+    - master
