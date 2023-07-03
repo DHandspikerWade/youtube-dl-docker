@@ -3,7 +3,7 @@ type: docker
 name: default
 
 steps:
-- name: Build & publish (x86_64)
+- name: Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
   settings:
@@ -15,7 +15,7 @@ steps:
     build_args_from_env: 
       - YT_DLP_VERSION
     repo: handspiker2/youtube-dl
-    tags: latest-x86
+    tags: latest-amd64
     dry_run: false
     platforms: [linux/amd64]
   when:
@@ -24,7 +24,7 @@ steps:
 
 - name: Build & publish (arm64)
   depends_on: 
-    - Build & publish (x86_64)
+    - Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
   settings:
@@ -45,7 +45,7 @@ steps:
 
 - name: Build & publish (arm v6)
   depends_on: 
-    - Build & publish (x86_64)
+    - Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
   settings:
@@ -66,7 +66,7 @@ steps:
 
 - name: Build & publish (arm v7)
   depends_on: 
-    - Build & publish (x86_64)
+    - Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
   settings:
@@ -84,6 +84,18 @@ steps:
   when:
     branch:
     - master
+
+- name: Combine images
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  environment:
+    DOCKER_USER:
+      from_secret: docker_username
+    DOCKER_PASS:
+      from_secret: docker_password
+  commands:
+    - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+    - docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
 
 # Just test build branches
 - name: Build (x86_64)
