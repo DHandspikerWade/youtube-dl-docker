@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: default
+name: build
 
 steps:
 - name: Build & publish (amd64)
@@ -96,7 +96,14 @@ steps:
   commands:
     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
     - docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
-
+  depends_on: 
+    - Build & publish (amd64)
+    - Build & publish (arm v7)
+    - Build & publish (arm v6)
+    - Build & publish (arm64)
+  when:
+    branch:
+    - master
 # Just test build branches
 - name: Build (x86_64)
   image: thegeeklab/drone-docker-buildx:23
