@@ -15,7 +15,7 @@ steps:
     build_args_from_env: 
       - YT_DLP_VERSION
     repo: handspiker2/youtube-dl
-    tags: latest
+    tags: latest-x86
     dry_run: false
     platforms: [linux/amd64]
   when:
@@ -36,7 +36,7 @@ steps:
     build_args_from_env: 
       - YT_DLP_VERSION
     repo: handspiker2/youtube-dl
-    tags: latest
+    tags: latest-arm64
     dry_run: false
     platforms: [linux/arm64]
   when:
@@ -57,7 +57,7 @@ steps:
     build_args_from_env: 
       - YT_DLP_VERSION
     repo: handspiker2/youtube-dl
-    tags: latest
+    tags: latest-armv6
     dry_run: false
     platforms: [linux/arm/v6]
   when:
@@ -78,7 +78,7 @@ steps:
     build_args_from_env: 
       - YT_DLP_VERSION
     repo: handspiker2/youtube-dl
-    tags: latest
+    tags: latest-armv7
     dry_run: false
     platforms: [linux/arm/v7]
   when:
