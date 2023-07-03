@@ -3,17 +3,155 @@ type: docker
 name: default
 
 steps:
-- name: Build & publish  
-  image: plugins/docker
+- name: Build & publish (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
   settings:
     username:
       from_secret: docker_username
     password: 
       from_secret: docker_password
     build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
     repo: handspiker2/youtube-dl
     tags: latest
     dry_run: false
+    platforms: [linux/amd64]
   when:
     branch:
     - master
+
+- name: Build & publish (arm64)
+  depends_on: 
+    - Build & publish (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    username:
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: false
+    platforms: [linux/arm64]
+  when:
+    branch:
+    - master
+
+- name: Build & publish (arm v6)
+  depends_on: 
+    - Build & publish (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    username:
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: false
+    platforms: [linux/arm/v6]
+  when:
+    branch:
+    - master
+
+- name: Build & publish (arm v7)
+  depends_on: 
+    - Build & publish (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    username:
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: false
+    platforms: [linux/arm/v7]
+  when:
+    branch:
+    - master
+
+# Just test build branches
+- name: Build (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/amd64]
+  when:
+    branch:
+      exclude:
+      - master
+
+- name: Build (arm64)
+  depends_on: 
+    - Build (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/arm64]
+  when:
+    branch:
+      exclude:
+      - master
+
+- name: Build (arm v6) #most commonly for the raspberry pi zero
+  depends_on: 
+    - Build (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/arm/v6]
+  when:
+    branch:
+      exclude:
+      - master
+
+- name: Build (arm v7)
+  depends_on: 
+    - Build (x86_64)
+  image: thegeeklab/drone-docker-buildx:23
+  privileged: true
+  settings:
+    build_args: "BUILD_DATE=${DRONE_BUILD_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/arm/v7]
+  when:
+    branch:
+      exclude:
+      - master

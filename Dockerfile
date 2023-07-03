@@ -14,12 +14,15 @@ RUN apk add --no-cache \
         curl
 
 ARG BUILD_DATE
+ARG YT_DLP_VERSION=""
 LABEL org.label-schema.build-date=$BUILD_DATE
 
-RUN \ 
-    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
-    && chmod a+rx /usr/local/bin/yt-dlp \
-    && apk add --no-cache atomicparsley --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+COPY build.sh /
+RUN \
+    apk add --no-cache --virtual build-dependencies build-base python3-dev \
+    && chmod +x /build.sh \
+    && /build.sh \
+    && apk del build-dependencies
 
 # Try to run it so we know it works
 RUN yt-dlp --version
