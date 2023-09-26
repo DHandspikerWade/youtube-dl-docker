@@ -18,4 +18,4 @@ else # TODO this catch is never used as all strings are consided tags
 fi 
 
 python3 -m pip install "$source_url" \
-&& apk add --no-cache atomicparsley --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+&& apk add --no-cache atomicparsley --update-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
