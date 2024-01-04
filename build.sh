@@ -17,5 +17,6 @@ else # TODO this catch is never used as all strings are consided tags
     exit 1
 fi 
 
-python3 -m pip install "$source_url" \
+# Requires `--break-system-packages` due to https://peps.python.org/pep-0668/
+python3 -m pip install --break-system-packages "$source_url" \
 && apk add --no-cache atomicparsley --update-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
