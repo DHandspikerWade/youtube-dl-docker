@@ -9,6 +9,8 @@ steps:
     - chmod +x docker-entrypoint.sh
 
 - name: Build & publish (amd64)
+  depends_on: 
+    - Fix file permissions
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
   settings:
@@ -29,6 +31,7 @@ steps:
 
 - name: Build & publish (arm64)
   depends_on: 
+    - Fix file permissions
     - Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
@@ -50,6 +53,7 @@ steps:
 
 - name: Build & publish (arm v6)
   depends_on: 
+    - Fix file permissions
     - Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
@@ -71,6 +75,7 @@ steps:
 
 - name: Build & publish (arm v7)
   depends_on: 
+    - Fix file permissions
     - Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
@@ -109,8 +114,11 @@ steps:
   when:
     branch:
     - master
+
 # Just test build branches
 - name: Build (x86_64)
+  depends_on:
+    - Fix file permissions
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
   settings:
@@ -128,6 +136,7 @@ steps:
 
 - name: Build (arm64)
   depends_on: 
+    - Fix file permissions
     - Build (x86_64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
@@ -146,6 +155,7 @@ steps:
 
 - name: Build (arm v6) #most commonly for the raspberry pi zero
   depends_on: 
+    - Fix file permissions
     - Build (x86_64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
@@ -164,6 +174,7 @@ steps:
 
 - name: Build (arm v7)
   depends_on: 
+    - Fix file permissions
     - Build (x86_64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
