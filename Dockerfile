@@ -17,7 +17,7 @@ ARG BUILD_DATE
 ARG YT_DLP_VERSION=""
 LABEL org.label-schema.build-date=$BUILD_DATE
 
-COPY build.sh /
+COPY build.sh docker-entrypoint.sh /
 RUN \
     apk add --no-cache --virtual build-dependencies build-base python3-dev \
     && chmod +x /build.sh \
@@ -29,5 +29,5 @@ RUN yt-dlp --version
 
 WORKDIR /data
 
-ENTRYPOINT ["yt-dlp"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["--help"]

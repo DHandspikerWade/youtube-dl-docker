@@ -3,6 +3,11 @@ type: docker
 name: build
 
 steps:
+- name: Fix file permissions
+  image: handspiker2/ci-tools:base
+  commands:
+    - chmod +x docker-entrypoint.sh
+
 - name: Build & publish (amd64)
   image: thegeeklab/drone-docker-buildx:23
   privileged: true
