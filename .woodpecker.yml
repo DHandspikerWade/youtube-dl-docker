@@ -1,0 +1,84 @@
+steps:
+- name: Fix file permissions
+  image: handspiker2/ci-tools:base
+  commands:
+    - chmod +x docker-entrypoint.sh
+
+# Just test build branches
+- name: Build (x86_64)
+  depends_on:
+    - Fix file permissions
+  image: woodpeckerci/plugin-docker-buildx
+  settings:
+    auto_labels: false
+    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/amd64]
+  when:
+    branch:
+      exclude:
+      - master
+
+- name: Build (arm64)
+  group: build
+  depends_on: 
+    - Fix file permissions
+    - Build (x86_64)
+  image: woodpeckerci/plugin-docker-buildx
+  settings:
+    auto_labels: false
+    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/arm64]
+  when:
+    branch:
+      exclude:
+      - master
+
+- name: Build (arm v6) #most commonly for the raspberry pi zero
+  group: build
+  depends_on: 
+    - Fix file permissions
+    - Build (x86_64)
+  image: woodpeckerci/plugin-docker-buildx
+  settings:
+    auto_labels: false
+    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/arm/v6]
+  when:
+    branch:
+      exclude:
+      - master
+
+- name: Build (arm v7)
+  group: build
+  depends_on: 
+    - Fix file permissions
+    - Build (x86_64)
+  image: woodpeckerci/plugin-docker-buildx
+  settings:
+    auto_labels: false
+    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
+    build_args_from_env: 
+      - YT_DLP_VERSION
+    repo: handspiker2/youtube-dl
+    tags: latest
+    dry_run: true
+    platforms: [linux/arm/v7]
+  when:
+    branch:
+      exclude:
+      - master
