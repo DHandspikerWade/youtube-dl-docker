@@ -3,6 +3,9 @@ steps:
   image: handspiker2/ci-tools:base
   commands:
     - chmod +x docker-entrypoint.sh
+  when:
+    # Should always run, but linter complains if there's no event filter
+    - event: [push, release, cron, manual]
 
 # Just test build branches
 - name: Build (x86_64)
@@ -19,9 +22,10 @@ steps:
     dry_run: true
     platforms: [linux/amd64]
   when:
-    branch:
-      exclude:
-      - master
+    - event: [push, release, cron, manual]
+      branch:
+        exclude:
+        - master
 
 - name: Build (arm64)
   depends_on: 
@@ -38,9 +42,10 @@ steps:
     dry_run: true
     platforms: [linux/arm64]
   when:
-    branch:
-      exclude:
-      - master
+    - event: [push, release, cron, manual]
+      branch:
+        exclude:
+        - master
 
 - name: Build (arm v6) #most commonly for the raspberry pi zero
   depends_on: 
@@ -57,9 +62,10 @@ steps:
     dry_run: true
     platforms: [linux/arm/v6]
   when:
-    branch:
-      exclude:
-      - master
+    - event: [push, release, cron, manual]
+      branch:
+        exclude:
+        - master
 
 - name: Build (arm v7)
   depends_on: 
@@ -76,9 +82,10 @@ steps:
     dry_run: true
     platforms: [linux/arm/v7]
   when:
-    branch:
-      exclude:
-      - master
+    - event: [push, release, cron, manual]
+      branch:
+        exclude:
+        - master
 
 # Production builds
 - name: Build & publish (amd64)
@@ -98,8 +105,9 @@ steps:
     dry_run: false
     platforms: [linux/amd64]
   when:
-    branch:
-    - master
+    - event: [push, release, cron, manual]
+      branch:
+        - master
 
 - name: Build & publish (arm64)
   depends_on: 
@@ -119,8 +127,9 @@ steps:
     dry_run: false
     platforms: [linux/arm64]
   when:
-    branch:
-    - master
+    - event: [push, release, cron, manual]
+      branch:
+        - master
 
 - name: Build & publish (arm v6)
   depends_on: 
@@ -140,8 +149,9 @@ steps:
     dry_run: false
     platforms: [linux/arm/v6]
   when:
-    branch:
-    - master
+    - event: [push, release, cron, manual]
+      branch:
+        - master
 
 - name: Build & publish (arm v7)
   depends_on: 
@@ -161,8 +171,9 @@ steps:
     dry_run: false
     platforms: [linux/arm/v7]
   when:
-    branch:
-    - master
+    - event: [push, release, cron, manual]
+      branch:
+        - master
 
 - name: Combine images
   image: woodpeckerci/plugin-docker-buildx
@@ -179,5 +190,6 @@ steps:
     - Build & publish (arm v6)
     - Build & publish (arm64)
   when:
-    branch:
-    - master
+    - event: [push, release, cron, manual]
+      branch:
+        - master
