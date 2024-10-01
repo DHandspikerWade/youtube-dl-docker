@@ -24,7 +24,6 @@ steps:
       - master
 
 - name: Build (arm64)
-  group: build
   depends_on: 
     - Fix file permissions
     - Build (x86_64)
@@ -44,7 +43,6 @@ steps:
       - master
 
 - name: Build (arm v6) #most commonly for the raspberry pi zero
-  group: build
   depends_on: 
     - Fix file permissions
     - Build (x86_64)
@@ -64,7 +62,6 @@ steps:
       - master
 
 - name: Build (arm v7)
-  group: build
   depends_on: 
     - Fix file permissions
     - Build (x86_64)
