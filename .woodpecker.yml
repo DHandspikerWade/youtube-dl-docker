@@ -177,7 +177,6 @@ steps:
 
 - name: Combine images
   image: woodpeckerci/plugin-docker-buildx
-  privileged: true
   secrets:
     - docker_username
     - docker_password
