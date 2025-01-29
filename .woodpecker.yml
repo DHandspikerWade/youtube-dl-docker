@@ -177,9 +177,11 @@ steps:
 
 - name: Combine images
   image: woodpeckerci/plugin-docker-buildx
-  secrets:
-    - docker_username
-    - docker_password
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
   commands:
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
     - docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
