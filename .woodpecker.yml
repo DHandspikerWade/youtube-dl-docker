@@ -185,7 +185,10 @@ steps:
   commands:
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
     - docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
-    - '[ -n "$$YT_DLP_VERSION" ] && docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:$YT_DLP_VERSION'
+    - |
+      if [ -n "$$YT_DLP_VERSION" ]; then
+        docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:$$YT_DLP_VERSION
+      fi
   depends_on: 
     - Build & publish (amd64)
     - Build & publish (arm v7)
