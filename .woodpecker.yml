@@ -11,7 +11,7 @@ steps:
 - name: Build (x86_64)
   depends_on:
     - Fix file permissions
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     auto_labels: false
     build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
@@ -31,7 +31,7 @@ steps:
   depends_on: 
     - Fix file permissions
     - Build (x86_64)
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     auto_labels: false
     build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
@@ -51,7 +51,7 @@ steps:
   depends_on: 
     - Fix file permissions
     - Build (x86_64)
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     auto_labels: false
     build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
@@ -71,7 +71,7 @@ steps:
   depends_on: 
     - Fix file permissions
     - Build (x86_64)
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     auto_labels: false
     build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
@@ -91,7 +91,7 @@ steps:
 - name: Build & publish (amd64)
   depends_on: 
     - Fix file permissions
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     username:
       from_secret: docker_username
@@ -113,7 +113,7 @@ steps:
   depends_on: 
     - Fix file permissions
     - Build & publish (amd64)
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     username:
       from_secret: docker_username
@@ -135,7 +135,7 @@ steps:
   depends_on: 
     - Fix file permissions
     - Build & publish (amd64)
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     username:
       from_secret: docker_username
@@ -157,7 +157,7 @@ steps:
   depends_on: 
     - Fix file permissions
     - Build & publish (amd64)
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   settings:
     username:
       from_secret: docker_username
@@ -176,7 +176,7 @@ steps:
         - master
 
 - name: Combine images
-  image: woodpeckerci/plugin-docker-buildx
+  image: woodpeckerci/plugin-docker-buildx:6
   environment:
     DOCKER_USERNAME:
       from_secret: docker_username
