@@ -47,46 +47,6 @@ steps:
         exclude:
         - master
 
-- name: Build (arm v6) #most commonly for the raspberry pi zero
-  depends_on: 
-    - Fix file permissions
-    - Build (x86_64)
-  image: woodpeckerci/plugin-docker-buildx:6
-  settings:
-    auto_labels: false
-    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
-    build_args_from_env: 
-      - YT_DLP_VERSION
-    repo: handspiker2/youtube-dl
-    tags: latest
-    dry_run: true
-    platforms: [linux/arm/v6]
-  when:
-    - event: [push, release, cron, manual]
-      branch:
-        exclude:
-        - master
-
-- name: Build (arm v7)
-  depends_on: 
-    - Fix file permissions
-    - Build (x86_64)
-  image: woodpeckerci/plugin-docker-buildx:6
-  settings:
-    auto_labels: false
-    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
-    build_args_from_env: 
-      - YT_DLP_VERSION
-    repo: handspiker2/youtube-dl
-    tags: latest
-    dry_run: true
-    platforms: [linux/arm/v7]
-  when:
-    - event: [push, release, cron, manual]
-      branch:
-        exclude:
-        - master
-
 # Production builds
 - name: Build & publish (amd64)
   depends_on: 
@@ -131,50 +91,6 @@ steps:
       branch:
         - master
 
-- name: Build & publish (arm v6)
-  depends_on: 
-    - Fix file permissions
-    - Build & publish (amd64)
-  image: woodpeckerci/plugin-docker-buildx:6
-  settings:
-    username:
-      from_secret: docker_username
-    password: 
-      from_secret: docker_password
-    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
-    build_args_from_env: 
-      - YT_DLP_VERSION
-    repo: handspiker2/youtube-dl
-    tags: latest-armv6
-    dry_run: false
-    platforms: [linux/arm/v6]
-  when:
-    - event: [push, release, cron, manual]
-      branch:
-        - master
-
-- name: Build & publish (arm v7)
-  depends_on: 
-    - Fix file permissions
-    - Build & publish (amd64)
-  image: woodpeckerci/plugin-docker-buildx:6
-  settings:
-    username:
-      from_secret: docker_username
-    password: 
-      from_secret: docker_password
-    build_args: "BUILD_DATE=${CI_PIPELINE_STARTED}"
-    build_args_from_env: 
-      - YT_DLP_VERSION
-    repo: handspiker2/youtube-dl
-    tags: latest-armv7
-    dry_run: false
-    platforms: [linux/arm/v7]
-  when:
-    - event: [push, release, cron, manual]
-      branch:
-        - master
-
 - name: Combine images
   image: woodpeckerci/plugin-docker-buildx:6
   environment:
@@ -184,15 +100,13 @@ steps:
       from_secret: docker_password
   commands:
     - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-    - docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
+    - docker buildx imagetools create -t handspiker2/youtube-dl:latest handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
     - |
       if [ -n "$$YT_DLP_VERSION" ]; then
-        docker buildx imagetools create -t handspiker2/youtube-dl:$$YT_DLP_VERSION handspiker2/youtube-dl:latest-armv6 handspiker2/youtube-dl:latest-armv7 handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
+        docker buildx imagetools create -t handspiker2/youtube-dl:$$YT_DLP_VERSION handspiker2/youtube-dl:latest-arm64 handspiker2/youtube-dl:latest-amd64
       fi
   depends_on: 
     - Build & publish (amd64)
-    - Build & publish (arm v7)
-    - Build & publish (arm v6)
     - Build & publish (arm64)
   when:
     - event: [push, release, cron, manual]
