@@ -1,5 +1,5 @@
 [![status-badge](https://ci.spikedhand.com/api/badges/3/status.svg)](https://ci.spikedhand.com/repos/3)
-![Docker Image Size](https://img.shields.io/docker/image-size/handspiker2/youtube-dl)
+[![Docker Image Size](https://img.shields.io/docker/image-size/handspiker2/youtube-dl)](https://hub.docker.com/r/handspiker2/youtube-dl)
 
 
 # Youtube-DL Container
