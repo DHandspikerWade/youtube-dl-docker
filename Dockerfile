@@ -11,7 +11,9 @@ RUN apk add --no-cache \
         python3 \
         aria2 \
         py3-pip \
-        curl
+        curl \
+        # https://github.com/yt-dlp/yt-dlp/issues/14404
+        deno
 
 ARG BUILD_DATE
 ARG YT_DLP_VERSION=""
